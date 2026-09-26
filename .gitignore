@@ -1,0 +1,60 @@
+# --- local data: NEVER commit these -------------------------------------
+# The app's database holds real tenant names, rents and contact details, and the
+# documents folder holds leases and IDs. Publishing either is irreversible.
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+landlord.db
+documents/
+backups/
+
+# --- secrets ------------------------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+credentials*
+.sipsats-admin-creds
+
+# --- python -------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- build / packaging output -------------------------------------------
+# Release tarballs and staged trees are reproducible from source.
+dist/releases/
+dist/releases/*.tar.gz
+build/
+*.snap
+*.flatpak
+.flatpak-builder/
+artifacts/screenshots-fresh/
+
+# --- generated workbooks that carry REAL tenant data --------------------
+# Built from the live database for Rodrigo's own use and delivered
+# out-of-band over the llm-box share. They contain real tenant names,
+# addresses, NIFs and rents; publishing one is irreversible.
+# Deny-by-default: every generated workbook is ignored, and only the EMPTY
+# import template (which ships with the release, by design) is re-allowed.
+# Verified 2026-09-26: 4 workbooks contained real names, 1 was clean.
+dist/landlord-tracker-*.xlsx
+!dist/landlord-tracker-import-template.xlsx
+dist/LEIA-ME.txt
+
+# --- editors / os -------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# NOTE: artifacts/screenshots/*.png IS committed on purpose — the README and the
+# store listings reference them, and they are generated from demo data only.

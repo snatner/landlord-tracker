@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "landlord-tracker"
+version = "0.1.0"
+description = "Free forever, offline, privacy-first rental property tracker for small landlords. No cloud, no accounts, no telemetry."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Landlord Tracker contributors" }]
+keywords = ["landlord", "rental", "property", "privacy", "offline", "linux"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Office/Business :: Financial :: Accounting",
+]
+dependencies = [
+    "PySide6>=6.6",
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.gui-scripts]
+landlord-tracker = "landlord_tracker.main:main"
+
+[project.urls]
+Homepage = "https://github.com/landlord-tracker/landlord-tracker"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+landlord_tracker = ["resources/*", "resources/**/*", "locale/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

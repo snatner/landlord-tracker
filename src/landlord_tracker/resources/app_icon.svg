@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3E8ED0"/>
+      <stop offset="1" stop-color="#20456F"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="26" fill="#152C47"/>
+  <path d="M24 62 L64 26 L104 62" fill="none" stroke="url(#roof)" stroke-width="10"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="36" y="64" width="56" height="40" rx="7" fill="#3E8ED0"/>
+  <rect x="46" y="74" width="12" height="12" rx="3" fill="#E7EDF5"/>
+  <rect x="70" y="74" width="12" height="12" rx="3" fill="#E7EDF5"/>
+  <rect x="58" y="90" width="12" height="14" rx="3" fill="#152C47"/>
+  <path d="M84 100 L104 100 L104 84 L84 84" fill="none" stroke="#2E9E63" stroke-width="7"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
