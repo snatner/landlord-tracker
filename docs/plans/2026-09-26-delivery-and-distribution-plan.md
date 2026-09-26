@@ -45,9 +45,14 @@ contact address on his behalf. Plan assumes he does those steps when asked.
 3. **Donations:** Ko-fi URL exists in `context.py` as a placeholder. Register
    the real page (or drop the buttons) before launch, or the UI advertises a
    dead link.
-4. **Feature-request email:** still a placeholder (`features@landlordtracker.app`
-   — a domain he does not own). Either use a `sipsats.com` address or lean on
-   GitHub Issues only.
+4. ~~**Feature-request email.**~~ **DECIDED 2026-09-26 — `landlordtracker@posteo.us`**,
+   a dedicated Posteo alias created for this app (Posteo allows 3 free aliases,
+   25 total). Shipped in `context.py` and verified in the rendered screenshot.
+   Do **not** plan to rotate it: a deleted alias stays blocked for 6 years and
+   the owner can re-add it, but post to a deleted alias **bounces** and shipped
+   copies cannot be recalled. Still outstanding on this front: the Ko-fi and
+   Buy Me a Coffee URLs are unconfirmed, and `README.md` advertises a *different*
+   Ko-fi slug (`/landlordtracker`) than `context.py` (`/snatner1337`).
 5. **Launch shape:** quiet (Flathub listing only) vs public push (Reddit/HN
    wave). Recommend quiet first, then one push once a few real users have
    confirmed it works on their machines.

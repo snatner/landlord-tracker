@@ -16,14 +16,25 @@ from .i18n import detect_system_language, set_language, tr
 from .services.formatting import set_locale as set_formatting_locale
 from .ui.theme import Theme, build_stylesheet
 
-APP_VERSION = "0.1.10"
+APP_VERSION = "0.1.11"
 
 # Support / feedback destinations live in one place so they are trivial to
-# change at release time. Ko-fi / Buy Me a Coffee are placeholders until Rodrigo
-# creates the real pages. Crypto addresses are real public receive addresses;
-# private keys are stored only on llm-box, not in the app repository/package.
-# Do not include placeholder chains here: the Crypto button copies this exact
-# text to the user's clipboard.
+# change at release time.
+#
+# FEATURE_EMAIL is REAL (set 2026-09-26): a dedicated Posteo alias created for
+# this app. It is published in the app UI, the README and the store listings, so
+# it will be scraped — never point it at a personal mailbox. Posteo aliases are
+# deletable and a deleted address stays blocked for 6 years, but post to a
+# deleted alias BOUNCES and shipped copies cannot be recalled, so keep this
+# address rather than rotating it.
+#
+# STILL PLACEHOLDERS: Ko-fi and Buy Me a Coffee. These URLs are not confirmed
+# live; the README currently advertises a different Ko-fi slug. Resolve or drop
+# the buttons before the first public release.
+#
+# Crypto addresses are real public receive addresses; private keys are stored
+# only on llm-box, not in the app repository/package. Do not include placeholder
+# chains here: the Crypto button copies this exact text to the user's clipboard.
 KOFI_URL = "https://ko-fi.com/snatner1337"
 BUYMEACOFFEE_URL = "https://buymeacoffee.com/snatner"
 CRYPTO_DONATION_TEXT = """Landlord Tracker crypto donations
@@ -33,9 +44,9 @@ Litecoin: ltc1qmpwgk4uqxgteypf644r43c6estk7wx4n5hvacx
 Bitcoin: bc1qwz8k0tss6649fpgjhhgc29tjsaxzzq0sqfkw0y
 """
 DONATION_URL = KOFI_URL
-FEATURE_EMAIL = "features@landlordtracker.app"
-GITHUB_ISSUES_URL = "https://github.com/landlord-tracker/landlord-tracker/issues/new"
-GITHUB_REPO_URL = "https://github.com/landlord-tracker/landlord-tracker"
+FEATURE_EMAIL = "landlordtracker@posteo.us"
+GITHUB_ISSUES_URL = "https://github.com/snatner/landlord-tracker/issues/new"
+GITHUB_REPO_URL = "https://github.com/snatner/landlord-tracker"
 
 DEFAULT_SETTINGS = {
     "language": "",            # "" -> follow system on first run

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "landlord-tracker"
-version = "0.1.0"
+version = "0.1.11"
 description = "Free forever, offline, privacy-first rental property tracker for small landlords. No cloud, no accounts, no telemetry."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -32,7 +32,7 @@ dev = ["pytest>=8.0"]
 landlord-tracker = "landlord_tracker.main:main"
 
 [project.urls]
-Homepage = "https://github.com/landlord-tracker/landlord-tracker"
+Homepage = "https://github.com/snatner/landlord-tracker"
 
 [tool.setuptools.packages.find]
 where = ["src"]
