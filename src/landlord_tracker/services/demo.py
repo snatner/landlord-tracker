@@ -48,9 +48,14 @@ def load_demo(db: Database) -> None:
     periods = _month_keys(12)
 
     # -- properties -----------------------------------------------------
+    # The demo portfolio is DELIBERATELY set in Lisboa rather than the author's
+    # own city. These records are rendered into screenshots that ship in the
+    # README and the store listings, so demo data must not disclose where he
+    # actually lives. Keep it geographically fictional, and keep the postcodes
+    # consistent with the city (Lisboa postcodes start with 1).
     flat_two = db.add_property(Property(
         name="Rua das Flores 12, 2º Esq",
-        address="Rua das Flores 12", city="Santarém", postcode="2000-123",
+        address="Rua das Flores 12", city="Lisboa", postcode="1200-192",
         property_type="T2 apartment",
         purchase_price=118000, purchase_date="2019-04-12",
         current_value=168000, monthly_fixed_costs=62, size_m2=78,
@@ -58,7 +63,7 @@ def load_demo(db: Database) -> None:
     ))
     ground = db.add_property(Property(
         name="Av. D. Afonso Henriques 45, R/C",
-        address="Av. D. Afonso Henriques 45", city="Santarém", postcode="2000-045",
+        address="Av. D. Afonso Henriques 45", city="Lisboa", postcode="1900-231",
         property_type="T1 apartment",
         purchase_price=92000, purchase_date="2021-09-01",
         current_value=139000, monthly_fixed_costs=48, size_m2=54,
@@ -66,7 +71,7 @@ def load_demo(db: Database) -> None:
     ))
     house = db.add_property(Property(
         name="Travessa do Forno 8",
-        address="Travessa do Forno 8", city="Santarém", postcode="2000-310",
+        address="Travessa do Forno 8", city="Lisboa", postcode="1100-232",
         property_type="T3 house",
         purchase_price=76000, purchase_date="2023-02-20",
         current_value=124000, monthly_fixed_costs=35, size_m2=112,
@@ -128,14 +133,14 @@ def load_demo(db: Database) -> None:
         property_id=house, title="Bathroom renovation", category="bathroom",
         status="done", start_date="2025-09-01", end_date="2025-10-10",
         budget=4200, expected_monthly_rent_increase=75, expected_value_increase=9000,
-        contractor="Obras Santarém Lda",
+        contractor="Obras Lisboa Lda",
         notes="Walk-in shower, no glass cabin. Tenant-ready.",
     ))
     kitchen = db.add_renovation(Renovation(
         property_id=house, title="Kitchen replacement", category="kitchen",
         status="in_progress", start_date="2026-02-01",
         budget=6500, expected_monthly_rent_increase=90, expected_value_increase=14000,
-        contractor="Cozinhas do Ribatejo",
+        contractor="Cozinhas da Graça",
     ))
     painting = db.add_renovation(Renovation(
         property_id=house, title="Exterior painting", category="painting",
@@ -153,13 +158,13 @@ def load_demo(db: Database) -> None:
         ))
 
     # linked renovation costs (these drive the payback numbers)
-    expense(house, "2025-09-08", "maintenance", 1850.0, "Obras Santarém Lda",
+    expense(house, "2025-09-08", "maintenance", 1850.0, "Obras Lisboa Lda",
             "Bathroom demolition and plumbing", bathroom)
     expense(house, "2025-09-26", "maintenance", 1420.0, "Casa Banho & Cia",
             "Walk-in shower base, tiles, fittings", bathroom)
-    expense(house, "2025-10-04", "maintenance", 780.0, "Obras Santarém Lda",
+    expense(house, "2025-10-04", "maintenance", 780.0, "Obras Lisboa Lda",
             "Electrical work and finishing", bathroom)
-    expense(house, "2026-02-05", "maintenance", 2400.0, "Cozinhas do Ribatejo",
+    expense(house, "2026-02-05", "maintenance", 2400.0, "Cozinhas da Graça",
             "Kitchen units deposit", kitchen)
 
     # recurring costs across the last 12 months
@@ -174,7 +179,7 @@ def load_demo(db: Database) -> None:
             expense(ground, _date_in(period, 20), "insurance", 126.0, "Fidelidade",
                     "Annual building insurance")
 
-    expense(flat_two, "2026-01-12", "repair", 320.0, "Pintores Ribatejo",
+    expense(flat_two, "2026-01-12", "repair", 320.0, "Pintores da Graça",
             "Living room repaint after tenant damage")
     expense(ground, "2026-02-18", "repair", 185.0, "Hidráulica Rápida",
             "Kitchen tap and siphon replacement")

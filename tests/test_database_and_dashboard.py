@@ -58,7 +58,7 @@ def test_settings_round_trip(db: Database):
 
 def test_property_crud_and_persistence(tmp_path: Path):
     database = Database(data_dir=tmp_path)
-    prop_id = database.add_property(Property(name="Test flat", city="Santarém",
+    prop_id = database.add_property(Property(name="Test flat", city="Lisboa",
                                              purchase_price=100000, current_value=140000))
     record = database.property(prop_id)
     assert record["name"] == "Test flat"

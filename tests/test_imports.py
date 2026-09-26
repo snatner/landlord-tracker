@@ -26,7 +26,7 @@ def test_import_workbook_loads_properties_tenants_and_leases(tmp_path: Path):
     ws.append(["name", "address", "city", "postcode", "property_type",
                "purchase_price", "purchase_date", "current_value",
                "monthly_fixed_costs", "size_m2", "notes"])
-    ws.append(["Rua das Flores 12", "Rua das Flores 12", "Santarém", "2000-000",
+    ws.append(["Rua das Flores 12", "Rua das Flores 12", "Lisboa", "1000-000",
                "Apartment", 100000, "2021-01-01", 125000, 55, 72, "real property"])
 
     ws = wb.create_sheet("Tenants")

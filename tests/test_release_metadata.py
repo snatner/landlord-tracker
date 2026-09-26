@@ -132,3 +132,27 @@ def test_settings_page_shows_the_feature_email(window):
     assert FEATURE_EMAIL in texts, (
         "the settings page must show the address users should write to"
     )
+
+
+# Locations the demo fixture is permitted to use. Deliberately a whitelist rather
+# than a blacklist: naming the author's real city here would itself publish it,
+# and this test file is shipped to a public repository.
+DEMO_LOCATIONS = {"Lisboa"}
+
+
+def test_demo_data_is_geographically_fictional():
+    """Demo records get rendered into PUBLIC screenshots.
+
+    The demo portfolio used to be set in the author's real city, so every
+    screenshot in the README and the store listings quietly disclosed where he
+    lives. This keeps the fixture on demo venues only.
+    """
+    demo = (ROOT / "src" / "landlord_tracker" / "services" / "demo.py").read_text(
+        encoding="utf-8"
+    )
+    cities = set(re.findall(r'city="([^"]+)"', demo))
+    assert cities, "the demo fixture must still create properties"
+    assert cities <= DEMO_LOCATIONS, (
+        f"demo.py uses locations outside the fictional allow-list: "
+        f"{sorted(cities - DEMO_LOCATIONS)}"
+    )
