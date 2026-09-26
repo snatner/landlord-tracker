@@ -139,6 +139,13 @@ def test_settings_page_shows_the_feature_email(window):
 # and this test file is shipped to a public repository.
 DEMO_LOCATIONS = {"Lisboa"}
 
+# Invented street addresses — same whitelist reasoning as DEMO_LOCATIONS.
+DEMO_ADDRESSES = {
+    "Rua das Flores 12",
+    "Av. D. Afonso Henriques 45",
+    "Travessa do Forno 8",
+}
+
 
 def test_demo_data_is_geographically_fictional():
     """Demo records get rendered into PUBLIC screenshots.
@@ -156,3 +163,126 @@ def test_demo_data_is_geographically_fictional():
         f"demo.py uses locations outside the fictional allow-list: "
         f"{sorted(cities - DEMO_LOCATIONS)}"
     )
+
+
+# Every vendor/contractor name the demo fixture may use. Frozen on purpose: the
+# city test above only catches `city="..."`, and a company name embeds a place
+# just as easily — "<trade> <town> Lda" reads like a plausible local business
+# while quietly naming somewhere real. Adding a name here is the review
+# checkpoint, because it ships in a public screenshot.
+DEMO_VENDORS = {
+    "Autoridade Tributária",
+    "Casa Banho & Cia",
+    "Condomínio Afonso",
+    "Condomínio Flores",
+    "Cozinhas Lisboa",
+    "Fidelidade",
+    "Hidráulica Rápida",
+    "Obras Lisboa Lda",
+    "Pintores Lisboa",
+}
+
+# Those names hide their location after a preposition, so a bare-city check
+# never saw it: only the whole company string did.
+PLACE_PREPOSITION = re.compile(r"\b(?:d[aeo]s?|de)\s+([A-ZÀ-Þ][\wÀ-ÿ]+)")
+
+
+def _demo_names(tmp_path):
+    from landlord_tracker.db import Database
+    from landlord_tracker.services.demo import load_demo
+
+    db = Database(data_dir=tmp_path)
+    load_demo(db)
+    names = set()
+    for table, column in (
+        ("expenses", "vendor"),
+        ("renovations", "contractor"),
+        ("recurring_expenses", "vendor"),
+    ):
+        rows = db.query(
+            f"SELECT DISTINCT {column} AS name FROM {table} "
+            f"WHERE {column} IS NOT NULL AND {column} != ''"
+        )
+        names |= {row["name"] for row in rows}
+    db.close()
+    return names
+
+
+def test_demo_vendors_are_the_reviewed_set(tmp_path):
+    """A new vendor name must be approved deliberately, not slipped in.
+
+    Four real-data workbooks were blocked at the leak gate before the first
+    push; this is the same gate for the strings that reach the render output.
+    """
+    found = _demo_names(tmp_path)
+    assert found == DEMO_VENDORS, (
+        "demo vendors changed — check every new name for a real place, then "
+        f"update DEMO_VENDORS. Unexpected: {sorted(found - DEMO_VENDORS)}, "
+        f"missing: {sorted(DEMO_VENDORS - found)}"
+    )
+
+
+def test_demo_vendors_hide_no_place_after_a_preposition(tmp_path):
+    offenders = set()
+    for name in _demo_names(tmp_path):
+        for word in PLACE_PREPOSITION.findall(name):
+            if word not in DEMO_LOCATIONS:
+                offenders.add(f"{name} -> {word}")
+    assert not offenders, (
+        f"demo vendor names embed locations outside {sorted(DEMO_LOCATIONS)}: "
+        f"{sorted(offenders)}"
+    )
+
+
+def test_demo_addresses_are_the_reviewed_set():
+    """Same whitelist reasoning as the city test, one field deeper.
+
+    An address is the most likely way the real portfolio creeps back into the
+    fixture, because demo.py is *modelled* on it.
+    """
+    demo = (ROOT / "src" / "landlord_tracker" / "services" / "demo.py").read_text(
+        encoding="utf-8"
+    )
+    addresses = set(re.findall(r'address="([^"]+)"', demo))
+    assert addresses, "the demo fixture must still create properties"
+    assert addresses == DEMO_ADDRESSES, (
+        "demo addresses changed — confirm the new ones are invented, then update "
+        f"DEMO_ADDRESSES. Unexpected: {sorted(addresses - DEMO_ADDRESSES)}, "
+        f"missing: {sorted(DEMO_ADDRESSES - addresses)}"
+    )
+
+
+def test_status_bar_does_not_publish_the_home_directory(qapp, tmp_path, monkeypatch):
+    """The status bar string ends up in public screenshots.
+
+    Rendered absolute, it disclosed the account name of whoever took the
+    screenshot — and the harness's own temp directory, which read as debug
+    output on the store listing.
+    """
+    monkeypatch.setenv("HOME", str(tmp_path))
+    from landlord_tracker.context import AppContext
+    from landlord_tracker.ui.main_window import MainWindow
+
+    data_dir = tmp_path / ".local" / "share" / "landlord-tracker"
+    win = MainWindow(AppContext(data_dir=data_dir))
+    try:
+        win.switch_to("dashboard")
+        message = win.status.currentMessage()
+        assert "~/.local/share/landlord-tracker" in message, message
+        assert str(tmp_path) not in message, message
+    finally:
+        win.close()
+
+
+def test_settings_screen_does_not_publish_the_home_directory(qapp, tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path))
+    from landlord_tracker.context import AppContext
+    from landlord_tracker.ui.main_window import MainWindow
+
+    data_dir = tmp_path / ".local" / "share" / "landlord-tracker"
+    win = MainWindow(AppContext(data_dir=data_dir))
+    try:
+        text = win.settings.path_label.text()
+        assert text == "~/.local/share/landlord-tracker", text
+    finally:
+        win.close()

@@ -140,7 +140,7 @@ def load_demo(db: Database) -> None:
         property_id=house, title="Kitchen replacement", category="kitchen",
         status="in_progress", start_date="2026-02-01",
         budget=6500, expected_monthly_rent_increase=90, expected_value_increase=14000,
-        contractor="Cozinhas da Graça",
+        contractor="Cozinhas Lisboa",
     ))
     painting = db.add_renovation(Renovation(
         property_id=house, title="Exterior painting", category="painting",
@@ -164,7 +164,7 @@ def load_demo(db: Database) -> None:
             "Walk-in shower base, tiles, fittings", bathroom)
     expense(house, "2025-10-04", "maintenance", 780.0, "Obras Lisboa Lda",
             "Electrical work and finishing", bathroom)
-    expense(house, "2026-02-05", "maintenance", 2400.0, "Cozinhas da Graça",
+    expense(house, "2026-02-05", "maintenance", 2400.0, "Cozinhas Lisboa",
             "Kitchen units deposit", kitchen)
 
     # recurring costs across the last 12 months
@@ -179,7 +179,7 @@ def load_demo(db: Database) -> None:
             expense(ground, _date_in(period, 20), "insurance", 126.0, "Fidelidade",
                     "Annual building insurance")
 
-    expense(flat_two, "2026-01-12", "repair", 320.0, "Pintores da Graça",
+    expense(flat_two, "2026-01-12", "repair", 320.0, "Pintores Lisboa",
             "Living room repaint after tenant damage")
     expense(ground, "2026-02-18", "repair", 185.0, "Hidráulica Rápida",
             "Kitchen tap and siphon replacement")

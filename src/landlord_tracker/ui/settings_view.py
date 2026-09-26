@@ -31,7 +31,7 @@ from ..services import backups as backup_service
 from ..services import demo as demo_service
 from ..services.exports import export_workbook
 from ..services.imports import import_workbook
-from ..services.formatting import CURRENCIES
+from ..services.formatting import CURRENCIES, format_path
 from .widgets import card, section_title
 
 
@@ -135,7 +135,7 @@ class SettingsView(QWidget):
         layout.addWidget(section_title(tr("data_folder")))
 
         path_row = QHBoxLayout()
-        self.path_label = QLabel(str(self.ctx.db.data_dir))
+        self.path_label = QLabel(format_path(self.ctx.db.data_dir))
         self.path_label.setObjectName("Muted")
         self.path_label.setWordWrap(True)
         path_row.addWidget(self.path_label, 1)

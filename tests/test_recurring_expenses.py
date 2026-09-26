@@ -258,7 +258,7 @@ def qapp():
 @pytest.fixture()
 def window(qapp, tmp_path: Path):
     ctx = AppContext(data_dir=tmp_path)
-    prop_id = ctx.db.add_property(Property(name="P2 — Caldas"))
+    prop_id = ctx.db.add_property(Property(name="P2 — Test flat"))
     ctx.db.add_recurring_expense(RecurringExpense(
         property_id=prop_id, category="condo", amount=35.0,
         description="Condo contribution", frequency="monthly",

@@ -7,7 +7,8 @@ expect ``€1,234.50``.
 
 from __future__ import annotations
 
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
 
 # currency -> symbol
 CURRENCIES = {
@@ -124,3 +125,29 @@ def format_kpi(value: Optional[float], kind: str, currency: str = "EUR") -> str:
     if kind == "months":
         return format_months(value)
     return format_count(value)
+
+
+def format_path(path: Union[str, Path]) -> str:
+    """Shorten a path under the user's home directory so it starts with ``~``.
+
+    Two reasons this is not cosmetic:
+
+    * The data folder is shown in the status bar and the settings screen, and
+      both end up in screenshots that ship to the README and the store
+      listings — an absolute path publishes the user's account name.
+    * ``~/.local/share/landlord-tracker`` is also what the user sees on their
+      own machine, so a screenshot of it matches reality instead of showing a
+      render-harness temp directory.
+
+    Paths outside the home directory are returned unchanged.
+    """
+    text = str(path)
+    home = str(Path.home()).rstrip("/")
+    if not home or home == "/":
+        return text
+    if text == home:
+        return "~"
+    prefix = home + "/"
+    if text.startswith(prefix):
+        return "~/" + text[len(prefix):]
+    return text

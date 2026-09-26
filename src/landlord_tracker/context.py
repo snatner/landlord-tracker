@@ -16,7 +16,7 @@ from .i18n import detect_system_language, set_language, tr
 from .services.formatting import set_locale as set_formatting_locale
 from .ui.theme import Theme, build_stylesheet
 
-APP_VERSION = "0.1.12"
+APP_VERSION = "0.1.13"
 
 # Reverse-DNS application id. This is a ONE-WAY DOOR once published: Flathub and
 # the Snap Store treat it as the permanent identity of the app. It has to be

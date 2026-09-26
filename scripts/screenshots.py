@@ -79,11 +79,18 @@ def render(outdir: Path, data_dir: Path, width: int = 1500, height: int = 960) -
 
 def main() -> int:
     outdir = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "artifacts" / "screenshots"
-    # Default to a *fresh* data dir per run. A reused directory keeps the old
-    # database, `is_empty()` is then false, load_demo() never runs again, and
-    # every screenshot silently shows stale data after the seed set changes.
-    default_dir = Path(tempfile.mkdtemp(prefix="landlord-tracker-shots-"))
-    data_dir = Path(os.environ.get("SHOT_DATA_DIR") or default_dir)
+    # Fresh directory per run. A reused one keeps the old database, `is_empty()`
+    # is then false, load_demo() never runs again, and every screenshot silently
+    # shows stale data after the seed set changes.
+    #
+    # We also point HOME at the scratch directory. The status bar and the
+    # settings screen render the data folder through format_path(), which
+    # collapses the home prefix to "~" — so the shipped screenshots read
+    # "~/.local/share/landlord-tracker", which is what a real user sees, instead
+    # of advertising this script's temp path on a store listing.
+    home = Path(tempfile.mkdtemp(prefix="landlord-tracker-shots-"))
+    os.environ["HOME"] = str(home)
+    data_dir = Path(os.environ.get("SHOT_DATA_DIR") or home / ".local" / "share" / "landlord-tracker")
     print(f"Rendering screenshots into {outdir}")
     written = render(outdir, data_dir)
     print(f"Done: {len(written)} screenshots")

@@ -29,6 +29,7 @@ from ..context import (
 )
 from ..i18n import tr
 from ..services import demo as demo_service
+from ..services.formatting import format_path
 from .dashboard_view import DashboardView
 from .documents_view import DocumentsView
 from .expenses_view import ExpensesView
@@ -232,7 +233,7 @@ class MainWindow(QMainWindow):
             f"{tr('properties')}: {db.count('properties')} · "
             f"{tr('tenants')}: {db.count('tenants')} · "
             f"{tr('leases')}: {db.count('leases')} · "
-            f"{tr('data_folder')}: {db.data_dir}"
+            f"{tr('data_folder')}: {format_path(db.data_dir)}"
         )
 
     def _maybe_offer_demo(self) -> None:
