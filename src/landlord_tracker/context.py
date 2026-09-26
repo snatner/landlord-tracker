@@ -35,9 +35,15 @@ APP_ID = "io.github.snatner.LandlordTracker"
 # deleted alias BOUNCES and shipped copies cannot be recalled, so keep this
 # address rather than rotating it.
 #
-# STILL PLACEHOLDERS: Ko-fi and Buy Me a Coffee. These URLs are not confirmed
-# live; the README currently advertises a different Ko-fi slug. Resolve or drop
-# the buttons before the first public release.
+# Ko-fi and Buy Me a Coffee slugs are now IDENTICAL in the README and the UI;
+# tests/test_release_metadata.py pins them together so they cannot drift apart
+# again. They once disagreed: the README's bullet used the /landlordtracker slug
+# while the app button opened /snatner1337 — two different pages, and the README
+# labelled its link with the other service's name.
+# The Ko-fi slug itself is still UNCONFIRMED LIVE: ko-fi.com answers Cloudflare
+# 403 to every fetch tried (datacenter and residential), so it could not be
+# verified over HTTP. Open the page in a browser once, then delete this note.
+# Buy Me a Coffee resolves 200 and is live.
 #
 # Crypto addresses are real public receive addresses; private keys are stored
 # only on llm-box, not in the app repository/package. Do not include placeholder

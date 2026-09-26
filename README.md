@@ -81,7 +81,8 @@ limit on the number of properties, tenants or leases.
 
 If it saves you money or time, you can support development — entirely optional:
 
-- Buy me a coffee: https://ko-fi.com/landlordtracker
+- Ko-fi: https://ko-fi.com/snatner1337
+- Buy Me a Coffee: https://buymeacoffee.com/snatner
 - GitHub Sponsors: see the repository
 
 ## Found a bug, or want a feature?

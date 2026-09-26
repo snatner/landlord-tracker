@@ -28,16 +28,22 @@ from PySide6.QtWidgets import QApplication, QLabel  # noqa: E402
 
 from landlord_tracker.context import (  # noqa: E402
     APP_VERSION,
+    BUYMEACOFFEE_URL,
     FEATURE_EMAIL,
     GITHUB_ISSUES_URL,
     GITHUB_REPO_URL,
+    KOFI_URL,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "github.com/snatner/landlord-tracker"
 
 # Values that were placeholders. Shipped text must never mention them again.
-DEAD_MARKERS = ("landlordtracker.app", "github.com/landlord-tracker/")
+DEAD_MARKERS = (
+    "landlordtracker.app",
+    "github.com/landlord-tracker/",
+    "ko-fi.com/landlordtracker",
+)
 
 
 @pytest.fixture(scope="module")
@@ -264,6 +270,63 @@ def test_readme_does_not_claim_a_test_count():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     found = re.findall(r"\b\d+\s+tests?\b", readme)
     assert not found, f"README.md claims a test count {found}; it drifts silently"
+
+
+def test_readme_support_links_match_the_app_constants():
+    """The repo and the app must send supporters to the same page.
+
+    The README advertised ``ko-fi.com/landlordtracker`` while the shipped app's
+    Ko-fi button opened ``ko-fi.com/snatner1337`` — two different slugs, one of
+    them wrong, on the one part of the project that is literally about money.
+    Support links are published in the app UI, the README and the store listings,
+    so a mismatch has to fail here rather than be spotted by eye.
+    """
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert KOFI_URL in readme, (
+        f"README must advertise the same Ko-fi page the app opens ({KOFI_URL})"
+    )
+    assert BUYMEACOFFEE_URL in readme, (
+        f"README must advertise the same Buy Me a Coffee page the app opens "
+        f"({BUYMEACOFFEE_URL})"
+    )
+
+    for host, expected in (
+        (r"ko-fi\.com", KOFI_URL),
+        (r"buymeacoffee\.com", BUYMEACOFFEE_URL),
+    ):
+        slugs = set(re.findall(host + r"/([A-Za-z0-9_-]+)", readme))
+        want = {expected.rsplit("/", 1)[-1]}
+        assert slugs == want, (
+            f"README advertises {sorted(slugs)} but the app opens {expected} — "
+            f"the repo and the app must point at the same page"
+        )
+
+
+def test_readme_support_lines_label_the_service_they_link_to():
+    """A Ko-fi URL under a "Buy me a coffee" label is a wrong turn for the reader.
+
+    Each bullet in the support section must name the service it actually opens.
+    """
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    checked = 0
+    for line in readme.splitlines():
+        if not line.startswith("- "):
+            continue
+        label = line.split(":", 1)[0].lower()
+        if "buy me a coffee" in label:
+            assert "buymeacoffee.com" in line, (
+                f"the 'Buy Me a Coffee' line must link to buymeacoffee.com: {line!r}"
+            )
+            checked += 1
+        elif "ko-fi" in label or "kofi" in label:
+            assert "ko-fi.com" in line, (
+                f"the Ko-fi line must link to ko-fi.com: {line!r}"
+            )
+            checked += 1
+    assert checked >= 2, (
+        f"expected both a Ko-fi and a Buy Me a Coffee line in the README, found {checked}"
+    )
 
 
 def test_release_workflow_exists_and_fires_on_tags():
