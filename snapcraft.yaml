@@ -1,0 +1,89 @@
+name: landlord-tracker
+title: Landlord Tracker
+base: core24
+version: "0.1.13"
+summary: Offline, privacy-first rental property tracker for small landlords
+description: |
+  Track properties, tenants, leases, rent, expenses and renovations in a single
+  local file. No cloud, no accounts, no telemetry — the app makes no network
+  requests at all.
+
+  * Properties, tenants and leases with rent history
+  * Rent ledger with paid / late / unpaid status and month-by-month view
+  * Expenses by category and property, plus recurring cost templates
+  * Renovations with real spend, budget and payback tracking
+  * Local document vault, SQLite backups, XLSX import and export
+  * Dashboard with cashflow and yield charts
+  * English and Portuguese (pt-PT)
+
+  Your data stays in ~/.local/share/landlord-tracker and never leaves the
+  machine.
+grade: stable
+confinement: strict
+license: GPL-3.0-or-later
+contact: landlordtracker@posteo.us
+issues: https://github.com/snatner/landlord-tracker/issues
+source-code: https://github.com/snatner/landlord-tracker
+website: https://github.com/snatner/landlord-tracker
+donation: https://ko-fi.com/snatner1337
+icon: dist/app_icon.png
+
+apps:
+  landlord-tracker:
+    command: bin/landlord-tracker
+    # No network plug on purpose: the app never talks to anything, and saying so
+    # in the listing is a trust signal. Keep it that way.
+    plugs:
+      - home
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - opengl
+
+parts:
+  landlord-tracker:
+    plugin: python
+    source: .
+    # The snap bundles PySide6 rather than leaning on a content snap: the
+    # kde-neon-6 extension explicitly does not provide Qt-for-Python bindings.
+    # Only QtCore/QtGui/QtWidgets are used, so Essentials is the right wheel.
+    python-packages:
+      - PySide6-Essentials~=6.8
+      - openpyxl~=3.1
+    stage-packages:
+      # Qt's xcb platform plugin links these at runtime; the wheel doesn't ship
+      # them. Missing any one of them fails with "could not load the Qt platform
+      # plugin xcb" and an unhelpful list of "available" plugins.
+      - libxcb-cursor0
+      - libxcb-icccm4
+      - libxcb-image0
+      - libxcb-keysyms1
+      - libxcb-randr0
+      - libxcb-render-util0
+      - libxcb-shape0
+      - libxcb-xfixes0
+      - libxcb-xinerama0
+      - libxcb-xkb1
+      - libxcb-sync1
+      - libxcb-shm0
+      - libxcb-util1
+      - libxcb-glx0
+      - libxcb-dri3-0
+      - libxcb-present0
+      - libxkbcommon-x11-0
+      - libfontconfig1
+      - libgl1
+      - libegl1
+    override-build: |
+      craftctl default
+      # The store reads AppStream metadata from this exact path, and it is what
+      # makes the listing show the real description, screenshots and releases.
+      METADATA="$CRAFT_PART_INSTALL/usr/share/metainfo"
+      install -d "$METADATA"
+      install -m644 \
+        src/landlord_tracker/resources/io.github.snatner.LandlordTracker.metainfo.xml \
+        "$METADATA/io.github.snatner.LandlordTracker.metainfo.xml"
+      # Keep the icon at the size the store expects.
+      install -Dm644 dist/app_icon.png \
+        "$CRAFT_PART_INSTALL/meta/gui/icon.png"

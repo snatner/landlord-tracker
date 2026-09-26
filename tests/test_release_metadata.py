@@ -234,6 +234,44 @@ def test_demo_vendors_hide_no_place_after_a_preposition(tmp_path):
     )
 
 
+def test_snapcraft_yaml_tracks_the_app_version():
+    """The snap manifest is a THIRD copy of the version string.
+
+    ``pyproject.toml`` drifted for ten releases because nothing ever read it, so
+    the same mistake here would publish a store listing that advertises a
+    version the app does not report.
+    """
+    text = (ROOT / "snapcraft.yaml").read_text(encoding="utf-8")
+    match = re.search(r'^version:\s*"?([^"\n]+?)"?\s*$', text, re.MULTILINE)
+    assert match, "snapcraft.yaml must declare a version"
+    assert match.group(1).strip() == APP_VERSION, (
+        f"snapcraft.yaml says {match.group(1).strip()} but APP_VERSION is "
+        f"{APP_VERSION} — the Snap Store would advertise the wrong version"
+    )
+
+
+def test_snap_bundles_every_runtime_dependency():
+    """A dependency added to pyproject but not to the snap fails at runtime.
+
+    The snap does not install from PyPI at run time; it ships the wheels it was
+    built with. Forget one and the confined app crashes with an ImportError that
+    the tarball install never reproduces.
+    """
+    pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    block = re.search(r"^dependencies\s*=\s*\[(.*?)\]", pyproject, re.MULTILINE | re.DOTALL)
+    assert block, "could not read the runtime dependency list"
+    declared = re.findall(r'"([A-Za-z0-9_.-]+)', block.group(1))
+    assert declared, "no runtime dependencies parsed"
+
+    snapcraft = (ROOT / "snapcraft.yaml").read_text(encoding="utf-8")
+    # PySide6 is bundled as the Essentials wheel; everything else keeps its name.
+    aliases = {"PySide6": "PySide6-Essentials"}
+    missing = [d for d in declared if aliases.get(d, d) not in snapcraft]
+    assert not missing, (
+        f"pyproject requires {missing} but snapcraft.yaml does not bundle them"
+    )
+
+
 def test_demo_addresses_are_the_reviewed_set():
     """Same whitelist reasoning as the city test, one field deeper.
 
