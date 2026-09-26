@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "landlord-tracker"
-version = "0.1.11"
+version = "0.1.12"
 description = "Free forever, offline, privacy-first rental property tracker for small landlords. No cloud, no accounts, no telemetry."
 readme = "README.md"
 requires-python = ">=3.10"

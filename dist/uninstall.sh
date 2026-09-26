@@ -11,7 +11,11 @@ PURGE=0
 [ "${1:-}" = "--purge" ] && PURGE=1
 
 rm -f  "$BIN_DIR/landlord-tracker"
+rm -f  "$APPS_DIR/io.github.snatner.LandlordTracker.desktop"
+# Pre-0.2.0 installs used this entry name; remove it too so an upgrade cannot
+# leave two "Landlord Tracker" icons in the menu.
 rm -f  "$APPS_DIR/landlord-tracker.desktop"
+rm -f  "$HOME/.local/share/metainfo/io.github.snatner.LandlordTracker.metainfo.xml"
 command -v update-desktop-database >/dev/null 2>&1 && \
     update-desktop-database "$APPS_DIR" >/dev/null 2>&1 || true
 

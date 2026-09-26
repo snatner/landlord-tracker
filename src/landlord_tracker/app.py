@@ -10,7 +10,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
-from .context import APP_VERSION, AppContext
+from .context import APP_ID, APP_VERSION, AppContext
 from .i18n import tr
 from .ui.main_window import MainWindow
 
@@ -23,11 +23,13 @@ def build_app(argv: Optional[list[str]] = None) -> tuple[QApplication, MainWindo
     app.setApplicationVersion(APP_VERSION)
     app.setOrganizationName("Landlord Tracker")
     # The desktop environment identifies a running window by this id and matches
-    # it to ``landlord-tracker.desktop``. Without it GNOME cannot associate the
-    # window with the installed entry, so the dock falls back to the interpreter
-    # name ("python3") and a generic icon instead of the app's name and logo.
-    # Must stay in sync with StartupWMClass in dist/install.sh.
-    app.setDesktopFileName("landlord-tracker")
+    # it to ``<APP_ID>.desktop``. Without it GNOME cannot associate the window
+    # with the installed entry, so the dock falls back to the interpreter name
+    # ("python3") and a generic icon instead of the app's name and logo.
+    # Must stay in sync with StartupWMClass and the .desktop basename in
+    # dist/install.sh, and with the AppStream <id>.
+    # tests/test_desktop_integration.py pins all of them together.
+    app.setDesktopFileName(APP_ID)
 
     icon_path = Path(__file__).resolve().parent / "resources" / "app_icon.svg"
     if icon_path.exists():

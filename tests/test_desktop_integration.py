@@ -21,9 +21,9 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
 from landlord_tracker.app import build_app  # noqa: E402
+from landlord_tracker.context import APP_ID  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-APP_ID = "landlord-tracker"
 
 
 @pytest.fixture(autouse=True)

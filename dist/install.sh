@@ -68,10 +68,18 @@ exec "$VENV_DIR/bin/python" -m landlord_tracker "\$@"
 EOF
 chmod +x "$BIN_DIR/landlord-tracker"
 
-# --- 5. desktop menu entry --------------------------------------------------
+# --- 5. desktop menu entry + AppStream metadata -----------------------------
+# The .desktop basename, StartupWMClass and the AppStream <id> ARE the app's
+# identity: the desktop environment matches a running window to its menu entry
+# by that id. All three must be io.github.snatner.LandlordTracker or GNOME shows
+# "python3" and a generic gear in the dock. tests/test_desktop_integration.py
+# reads this file and compares it against the app so they cannot drift.
 say "[5/5] Adding the application to your menu"
 mkdir -p "$APPS_DIR"
-cat > "$APPS_DIR/landlord-tracker.desktop" <<EOF
+# Pre-0.2.0 installs wrote landlord-tracker.desktop. Remove it, or upgrading
+# leaves two "Landlord Tracker" entries in the menu.
+rm -f "$APPS_DIR/landlord-tracker.desktop"
+cat > "$APPS_DIR/io.github.snatner.LandlordTracker.desktop" <<EOF
 [Desktop Entry]
 Type=Application
 Version=1.0
@@ -83,9 +91,19 @@ Terminal=false
 Categories=Office;Finance;Calculator;
 Keywords=rent;landlord;property;tenant;lease;mortgage;
 StartupNotify=true
-StartupWMClass=landlord-tracker
+StartupWMClass=io.github.snatner.LandlordTracker
 EOF
-chmod +x "$APPS_DIR/landlord-tracker.desktop"
+chmod +x "$APPS_DIR/io.github.snatner.LandlordTracker.desktop"
+
+# AppStream metadata, so GNOME Software and KDE Discover can show the app and so
+# this install describes itself exactly as the Flatpak/snap builds will.
+METAINFO_DIR="$HOME/.local/share/metainfo"
+METAINFO_NAME="io.github.snatner.LandlordTracker.metainfo.xml"
+METAINFO_SRC="$APP_SRC/landlord_tracker/resources/$METAINFO_NAME"
+if [ -f "$METAINFO_SRC" ]; then
+    mkdir -p "$METAINFO_DIR"
+    cp -f "$METAINFO_SRC" "$METAINFO_DIR/$METAINFO_NAME"
+fi
 
 command -v update-desktop-database >/dev/null 2>&1 && \
     update-desktop-database "$APPS_DIR" >/dev/null 2>&1 || true

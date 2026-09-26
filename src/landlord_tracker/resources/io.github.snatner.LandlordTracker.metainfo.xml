@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AppStream metadata for Landlord Tracker.
+
+  Required by BOTH Flathub and the Snap Store: without this file neither GNOME
+  Software nor KDE Discover can show the app, and Flathub will not accept the
+  submission.
+
+  Two rules that are easy to get wrong:
+  1. <id> MUST match the Flatpak app id and the installed .desktop basename
+     (io.github.snatner.LandlordTracker.desktop). If they disagree the store
+     build is rejected.
+  2. Screenshots must be real https URLs. We host them in this repository (the
+     app generates them from demo data only — never real tenant data), so they
+     cannot silently go stale.
+
+  Validate before submitting (pass the "explain" flag for detailed output):
+      appstreamcli validate io.github.snatner.LandlordTracker.metainfo.xml
+
+  NOTE: an XML comment may not contain a double hyphen, so the validator's own
+  flag name cannot be written literally in here. Keep it spelled out.
+-->
+<component type="desktop-application">
+  <id>io.github.snatner.LandlordTracker</id>
+
+  <name>Landlord Tracker</name>
+  <summary>Offline rental property manager for small landlords</summary>
+  <summary xml:lang="pt">Gestor de arrendamento offline para pequenos senhorios</summary>
+
+  <description>
+    <p>
+      Landlord Tracker keeps a small rental portfolio in one place: properties,
+      tenants, leases, rent, expenses, recurring costs, renovations and the
+      documents that go with them.
+    </p>
+    <p>What it does:</p>
+    <ul>
+      <li>Properties, tenants and leases, with rent and due dates</li>
+      <li>Rent tracking with paid, late and partially paid states</li>
+      <li>Expenses plus recurring cost templates such as condo fees, insurance and IMI</li>
+      <li>Renovations with budget versus actual spend, and payback against rent uplift</li>
+      <li>A document vault for leases, invoices and certificates</li>
+      <li>A dashboard with cashflow, occupancy and portfolio charts</li>
+      <li>Excel (XLSX) import and export, and local backups</li>
+      <li>English and Portuguese (Portugal)</li>
+    </ul>
+    <p>
+      Everything stays on your computer. There is no account, no cloud sync and
+      no telemetry: your records live in a single SQLite file that you own, and
+      the application makes no network connections at all. Spreadsheets and
+      hosted services cannot say that.
+    </p>
+    <p>
+      Free, and it will stay free. Development is funded entirely by donations,
+      so there are no paid tiers, locked features or usage limits.
+    </p>
+  </description>
+
+  <description xml:lang="pt">
+    <p>
+      O Landlord Tracker reúne a gestão de um pequeno património arrendado num
+      só sítio: imóveis, inquilinos, contratos, rendas, despesas, custos fixos,
+      obras e os documentos respetivos.
+    </p>
+    <p>O que faz:</p>
+    <ul>
+      <li>Imóveis, inquilinos e contratos, com renda e dia de pagamento</li>
+      <li>Controlo de rendas com estados pago, em atraso e parcial</li>
+      <li>Despesas e custos fixos como condomínio, seguros e IMI</li>
+      <li>Obras com orçamento versus gasto real e retorno face ao aumento de renda</li>
+      <li>Cofre de documentos para contratos, faturas e certificados</li>
+      <li>Painel com gráficos de tesouraria, ocupação e património</li>
+      <li>Importação e exportação Excel (XLSX) e cópias de segurança locais</li>
+      <li>Inglês e português (Portugal)</li>
+    </ul>
+    <p>
+      Tudo fica no seu computador. Não há conta, não há sincronização na nuvem
+      e não há telemetria: os seus registos vivem num único ficheiro SQLite que
+      lhe pertence, e a aplicação não faz qualquer ligação à rede.
+    </p>
+    <p>
+      É gratuito e continuará a ser. O desenvolvimento é financiado apenas por
+      donativos, sem planos pagos, funcionalidades bloqueadas ou limites de uso.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.github.snatner.LandlordTracker.desktop</launchable>
+
+  <url type="homepage">https://github.com/snatner/landlord-tracker</url>
+  <url type="bugtracker">https://github.com/snatner/landlord-tracker/issues</url>
+  <url type="vcs-browser">https://github.com/snatner/landlord-tracker</url>
+
+  <developer id="io.github.snatner">
+    <name>Rodrigo Lopes</name>
+  </developer>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <content_rating type="oars-1.1"/>
+
+  <categories>
+    <category>Office</category>
+    <category>Finance</category>
+  </categories>
+
+  <keywords>
+    <keyword>rent</keyword>
+    <keyword>landlord</keyword>
+    <keyword>property</keyword>
+    <keyword>tenant</keyword>
+    <keyword>lease</keyword>
+    <keyword>rental</keyword>
+    <keyword>offline</keyword>
+    <keyword>finance</keyword>
+  </keywords>
+  <keywords xml:lang="pt">
+    <keyword>renda</keyword>
+    <keyword>senhorio</keyword>
+    <keyword>imóvel</keyword>
+    <keyword>inquilino</keyword>
+    <keyword>contrato</keyword>
+    <keyword>arrendamento</keyword>
+    <keyword>offline</keyword>
+    <keyword>finanças</keyword>
+  </keywords>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Portfolio dashboard: cashflow, occupancy and rent status</caption>
+      <caption xml:lang="pt">Painel do património: tesouraria, ocupação e estado das rendas</caption>
+      <image type="source">https://raw.githubusercontent.com/snatner/landlord-tracker/main/artifacts/screenshots/dashboard.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Properties and their current value</caption>
+      <caption xml:lang="pt">Imóveis e o seu valor atual</caption>
+      <image type="source">https://raw.githubusercontent.com/snatner/landlord-tracker/main/artifacts/screenshots/properties.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Monthly rent, with paid and late states</caption>
+      <caption xml:lang="pt">Rendas mensais, com estados pago e em atraso</caption>
+      <image type="source">https://raw.githubusercontent.com/snatner/landlord-tracker/main/artifacts/screenshots/rent.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Recurring costs: templates that generate each month's expenses</caption>
+      <caption xml:lang="pt">Custos fixos: modelos que geram as despesas de cada mês</caption>
+      <image type="source">https://raw.githubusercontent.com/snatner/landlord-tracker/main/artifacts/screenshots/recurring.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Renovations: budget against real logged spend</caption>
+      <caption xml:lang="pt">Obras: orçamento face ao gasto real registado</caption>
+      <image type="source">https://raw.githubusercontent.com/snatner/landlord-tracker/main/artifacts/screenshots/renovations.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Expenses by category and property</caption>
+      <caption xml:lang="pt">Despesas por categoria e imóvel</caption>
+      <image type="source">https://raw.githubusercontent.com/snatner/landlord-tracker/main/artifacts/screenshots/expenses.png</image>
+    </screenshot>
+  </screenshots>
+
+  <releases>
+    <release version="0.1.12" date="2026-09-26">
+      <description>
+        <p>
+          First release with a stable application identity
+          (io.github.snatner.LandlordTracker) so the desktop entry, AppStream
+          metadata and the future Flatpak/snap builds all agree.
+        </p>
+        <p>
+          Properties, tenants, leases, rent, expenses, recurring cost templates,
+          renovations, document vault, dashboard, XLSX import/export, backups,
+          English and Portuguese.
+        </p>
+      </description>
+    </release>
+  </releases>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#3E8ED0</color>
+    <color type="primary" scheme_preference="dark">#152C47</color>
+  </branding>
+
+  <requires>
+    <display_length compare="ge">800</display_length>
+  </requires>
+
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </recommends>
+</component>

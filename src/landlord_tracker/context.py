@@ -16,7 +16,14 @@ from .i18n import detect_system_language, set_language, tr
 from .services.formatting import set_locale as set_formatting_locale
 from .ui.theme import Theme, build_stylesheet
 
-APP_VERSION = "0.1.11"
+APP_VERSION = "0.1.12"
+
+# Reverse-DNS application id. This is a ONE-WAY DOOR once published: Flathub and
+# the Snap Store treat it as the permanent identity of the app. It has to be
+# identical in four places — the installed .desktop basename, StartupWMClass,
+# setDesktopFileName() and the AppStream <id>. tests/test_desktop_integration.py
+# pins them together so they cannot drift.
+APP_ID = "io.github.snatner.LandlordTracker"
 
 # Support / feedback destinations live in one place so they are trivial to
 # change at release time.
