@@ -34,18 +34,7 @@ htmlcov/
 dist/releases/
 dist/releases/*.tar.gz
 build/
-*.snap
-*.flatpak
-.flatpak-builder/
 artifacts/screenshots-fresh/
-
-# --- snapcraft working dirs (2.4 GB after one build) --------------------
-# `snapcraft pack` leaves these in the project root. Committing them would add
-# gigabytes of vendored PySide6 and a copy of every build input.
-parts/
-prime/
-stage/
-snap/.snapcraft/
 
 # --- generated workbooks that carry REAL tenant data --------------------
 # Built from the live database for Rodrigo's own use and delivered
