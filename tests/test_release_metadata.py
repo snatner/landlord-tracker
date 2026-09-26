@@ -272,6 +272,52 @@ def test_snap_bundles_every_runtime_dependency():
     )
 
 
+def test_readme_does_not_hardcode_a_release_version():
+    """The README is the first thing a stranger reads.
+
+    It told people to download ``landlord-tracker-0.1.5.tar.gz`` while the app
+    was at 0.1.13 — nine releases of drift, on the front page, pointing at a file
+    that was never published anywhere. Keep the install command version-agnostic
+    so it cannot rot again.
+    """
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    found = re.findall(r"\b\d+\.\d+\.\d+\b", readme)
+    assert not found, (
+        f"README.md hardcodes release versions {found}; link to the Releases page "
+        f"and use a wildcard instead"
+    )
+
+
+def test_readme_install_points_at_the_releases_page():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    install = readme.split("## Install", 1)[1].split("\n## ", 1)[0]
+    assert "releases/latest" in install, "install section must link to Releases"
+    assert "landlord-tracker-*.tar.gz" in install, (
+        "the unpack command must glob the version so it survives a bump"
+    )
+
+
+def test_readme_does_not_claim_a_test_count():
+    """A stale test count is a small lie that makes every other number suspect."""
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    found = re.findall(r"\b\d+\s+tests?\b", readme)
+    assert not found, f"README.md claims a test count {found}; it drifts silently"
+
+
+def test_release_workflow_exists_and_fires_on_tags():
+    """Without it a visitor can read about the app and not download it.
+
+    A tag push is the whole release process; if this workflow is deleted,
+    ``releases/latest`` starts 404ing and only a human reading the repo notices.
+    """
+    workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+    assert "tags:" in workflow and "v*" in workflow, "must trigger on version tags"
+    assert "contents: write" in workflow, "needs write permission to publish"
+    assert "dist/build-release.sh" in workflow, (
+        "must build with the same script used locally, or the artifact differs"
+    )
+
+
 def test_demo_addresses_are_the_reviewed_set():
     """Same whitelist reasoning as the city test, one field deeper.
 

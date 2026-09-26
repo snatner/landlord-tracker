@@ -1,0 +1,42 @@
+name: Release
+
+# Cut a release by pushing a tag:
+#   git tag v0.1.14 && git push origin v0.1.14
+# The tarball is built here and attached to the release, so the download link in
+# the README always resolves. Before this workflow existed the repository had no
+# releases and no tags at all, which meant the README told visitors to download
+# a file that did not exist.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the release tarball
+        run: bash dist/build-release.sh
+
+      - name: Write checksums
+        run: |
+          cd dist/releases
+          sha256sum landlord-tracker-*.tar.gz > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            dist/releases/landlord-tracker-*.tar.gz \
+            dist/releases/SHA256SUMS.txt \
+            --title "Landlord Tracker $VERSION" \
+            --generate-notes

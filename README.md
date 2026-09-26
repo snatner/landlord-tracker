@@ -36,11 +36,12 @@ correct currency formatting for each locale.
 
 ## Install
 
-Download the release, unpack it, and run one command:
+Download the latest `.tar.gz` from the [Releases page](../../releases/latest),
+unpack it, and run one command:
 
 ```bash
-tar -xzf landlord-tracker-0.1.5.tar.gz
-cd landlord-tracker-0.1.5
+tar -xzf landlord-tracker-*.tar.gz
+cd landlord-tracker-*/
 ./install.sh
 ```
 
@@ -99,7 +100,7 @@ version, it stays free for everyone else too.
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
-QT_QPA_PLATFORM=offscreen pytest          # 72 tests
+QT_QPA_PLATFORM=offscreen pytest          # run the suite
 QT_QPA_PLATFORM=offscreen python scripts/screenshots.py
 python -m landlord_tracker
 ```
