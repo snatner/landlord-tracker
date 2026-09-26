@@ -105,12 +105,54 @@ def test_urls_are_https(component):
         assert url.text and url.text.startswith("https://"), url.text
 
 
-def test_portuguese_translation_is_present(component):
-    """The app ships pt-PT, so the store listing must too."""
+def test_portuguese_translation_is_present_and_correctly_shaped(component):
+    """The app ships pt-PT, so the store listing must too.
+
+    ``appstreamcli`` taught us the shape here: a <description> or <keywords>
+    tag may NOT carry xml:lang, only the individual <p>/<li>/<keyword> children.
+    A localized container tag is a hard validation error, so this asserts the
+    container is clean AND that Portuguese content exists inside it.
+    """
+    XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
+
     assert _text(component, "summary", lang="pt")
-    descriptions = [d for d in component.findall("description")
-                    if d.attrib.get("{http://www.w3.org/XML/1998/namespace}lang") == "pt"]
-    assert descriptions, "the pt description is missing from the store listing"
+
+    for tag in ("description", "keywords"):
+        for element in component.findall(tag):
+            assert XML_LANG not in element.attrib, (
+                f"<{tag}> must not carry xml:lang; localize its children instead "
+                f"(appstreamcli rejects a localized <{tag}> tag)"
+            )
+
+    pt_paragraphs = [p for p in component.findall("./description/p")
+                     if p.attrib.get(XML_LANG) == "pt"]
+    assert pt_paragraphs, "no Portuguese description paragraphs"
+
+    pt_keywords = [k for k in component.findall("./keywords/keyword")
+                   if k.attrib.get(XML_LANG) == "pt"]
+    assert pt_keywords, "no Portuguese keywords"
+
+
+def test_metainfo_passes_the_official_validator(component):
+    """Run the real thing when it is installed; skip where it is not.
+
+    appstreamcli is what Flathub runs, and it catches rules that no
+    hand-written check will (it already caught two on this file).
+    """
+    import shutil
+    import subprocess
+
+    exe = shutil.which("appstreamcli")
+    if not exe:
+        pytest.skip("appstreamcli is not installed on this machine")
+
+    result = subprocess.run(
+        [exe, "validate", str(METAINFO)],
+        capture_output=True, text=True, timeout=120,
+    )
+    assert result.returncode == 0, (
+        f"appstreamcli rejected the metainfo:\n{result.stdout}\n{result.stderr}"
+    )
 
 
 # --- screenshots -----------------------------------------------------------

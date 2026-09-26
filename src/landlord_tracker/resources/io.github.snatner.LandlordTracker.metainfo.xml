@@ -27,6 +27,9 @@
   <summary>Offline rental property manager for small landlords</summary>
   <summary xml:lang="pt">Gestor de arrendamento offline para pequenos senhorios</summary>
 
+  <!-- Localization rule: <description> itself must NOT carry xml:lang. Only the
+       inner <p>, <ul> and <li> elements may be localized. appstreamcli rejects
+       a localized <description> tag outright. -->
   <description>
     <p>
       Landlord Tracker keeps a small rental portfolio in one place: properties,
@@ -54,31 +57,29 @@
       Free, and it will stay free. Development is funded entirely by donations,
       so there are no paid tiers, locked features or usage limits.
     </p>
-  </description>
 
-  <description xml:lang="pt">
-    <p>
+    <p xml:lang="pt">
       O Landlord Tracker reúne a gestão de um pequeno património arrendado num
       só sítio: imóveis, inquilinos, contratos, rendas, despesas, custos fixos,
       obras e os documentos respetivos.
     </p>
-    <p>O que faz:</p>
+    <p xml:lang="pt">O que faz:</p>
     <ul>
-      <li>Imóveis, inquilinos e contratos, com renda e dia de pagamento</li>
-      <li>Controlo de rendas com estados pago, em atraso e parcial</li>
-      <li>Despesas e custos fixos como condomínio, seguros e IMI</li>
-      <li>Obras com orçamento versus gasto real e retorno face ao aumento de renda</li>
-      <li>Cofre de documentos para contratos, faturas e certificados</li>
-      <li>Painel com gráficos de tesouraria, ocupação e património</li>
-      <li>Importação e exportação Excel (XLSX) e cópias de segurança locais</li>
-      <li>Inglês e português (Portugal)</li>
+      <li xml:lang="pt">Imóveis, inquilinos e contratos, com renda e dia de pagamento</li>
+      <li xml:lang="pt">Controlo de rendas com estados pago, em atraso e parcial</li>
+      <li xml:lang="pt">Despesas e custos fixos como condomínio, seguros e IMI</li>
+      <li xml:lang="pt">Obras com orçamento versus gasto real e retorno face ao aumento de renda</li>
+      <li xml:lang="pt">Cofre de documentos para contratos, faturas e certificados</li>
+      <li xml:lang="pt">Painel com gráficos de tesouraria, ocupação e património</li>
+      <li xml:lang="pt">Importação e exportação Excel (XLSX) e cópias de segurança locais</li>
+      <li xml:lang="pt">Inglês e português (Portugal)</li>
     </ul>
-    <p>
+    <p xml:lang="pt">
       Tudo fica no seu computador. Não há conta, não há sincronização na nuvem
       e não há telemetria: os seus registos vivem num único ficheiro SQLite que
       lhe pertence, e a aplicação não faz qualquer ligação à rede.
     </p>
-    <p>
+    <p xml:lang="pt">
       É gratuito e continuará a ser. O desenvolvimento é financiado apenas por
       donativos, sem planos pagos, funcionalidades bloqueadas ou limites de uso.
     </p>
@@ -104,6 +105,8 @@
     <category>Finance</category>
   </categories>
 
+  <!-- Same rule as <description>: no xml:lang on <keywords>, only on each entry.
+       "offline" is the same word in both languages, so it is listed once. -->
   <keywords>
     <keyword>rent</keyword>
     <keyword>landlord</keyword>
@@ -113,16 +116,13 @@
     <keyword>rental</keyword>
     <keyword>offline</keyword>
     <keyword>finance</keyword>
-  </keywords>
-  <keywords xml:lang="pt">
-    <keyword>renda</keyword>
-    <keyword>senhorio</keyword>
-    <keyword>imóvel</keyword>
-    <keyword>inquilino</keyword>
-    <keyword>contrato</keyword>
-    <keyword>arrendamento</keyword>
-    <keyword>offline</keyword>
-    <keyword>finanças</keyword>
+    <keyword xml:lang="pt">renda</keyword>
+    <keyword xml:lang="pt">senhorio</keyword>
+    <keyword xml:lang="pt">imóvel</keyword>
+    <keyword xml:lang="pt">inquilino</keyword>
+    <keyword xml:lang="pt">contrato</keyword>
+    <keyword xml:lang="pt">arrendamento</keyword>
+    <keyword xml:lang="pt">finanças</keyword>
   </keywords>
 
   <screenshots>
